@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/10/31 12:17:47 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:08:51 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 int	create_one_philo(t_data *data, int i)
 {
 	data->philos[i].id = i + 1;
-	data->philos[i].state = waiting_launch;
+	data->philos[i].state = alive;
+	data->philos[i].amount_to_eat = data->amount_to_eat;
 	data->philos[i].left_fork = &(data->forks[i]);
 	data->philos[i].right_fork = &(data->forks[(i + 1) % data->count_of_philo]);
 	data->philos[i].data = data;
@@ -33,7 +34,7 @@ int	create_one_philo(t_data *data, int i)
 }
 
 /*
-	Creates amount_of_philo s_philo structs and puts them in an allocated array.
+	Creates count_of_philo s_philo structs and puts them in an allocated array.
 	@return 0 in case of an error.
 */
 int	create_philos(t_data *data)
@@ -52,7 +53,28 @@ int	create_philos(t_data *data)
 	return (0);
 }
 
+// int	create_grim_reaper(t_data *data)
+// {
+	
+// }
+
 void	begin_simulation(t_data *data)
 {
 	data->start_of_dining = current_time_in_ms();
+	pthread_mutex_unlock(&(data->start_mutex));
+}
+
+/*
+	Uses pthread_join to join all philos created
+	@return 0 in case of error
+*/
+int	join_philos(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->count_of_philo)
+		if (pthread_join(data->philos[i].philo, NULL) != 0)
+			return (0);
+	return (1);
 }

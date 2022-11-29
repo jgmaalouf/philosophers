@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:44:59 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/09 18:02:42 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/28 16:14:25 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	eat(t_philo *philo)
 {
 	logger(philo->id, "is eating", philo->data);
 	ms_sleep(philo->data->time_to_eat);
+	philo->amount_to_eat--;
 }
 
 void	putdown_fork(pthread_mutex_t *fork)
@@ -29,10 +30,39 @@ void	putdown_fork(pthread_mutex_t *fork)
 	pthread_mutex_unlock(fork);
 }
 
-void	schlafen(t_philo *philo)
+void	philo_sleep(t_philo *philo)
 {
 	logger(philo->id, "is sleeping", philo->data);
 	ms_sleep(philo->data->time_to_sleep);
+	logger(philo->id, "is thinking", philo->data);
+}
+
+void	pickup_forks(t_philo *philo)
+{
+	if (philo->id % 2 == 0)
+	{
+		pickup_fork(philo->id, philo->left_fork, philo->data);
+		pickup_fork(philo->id, philo->right_fork, philo->data);
+	}
+	else
+	{
+		pickup_fork(philo->id, philo->right_fork, philo->data);
+		pickup_fork(philo->id, philo->left_fork, philo->data);
+	}
+}
+
+void	putdown_forks(t_philo *philo)
+{
+	if (philo->id % 2 == 0)
+	{
+		putdown_fork(philo->left_fork);
+		putdown_fork(philo->right_fork);
+	}
+	else
+	{
+		putdown_fork(philo->right_fork);
+		putdown_fork(philo->left_fork);
+	}
 }
 
 void	*day_in_life_of_philo(void *param)
@@ -40,36 +70,14 @@ void	*day_in_life_of_philo(void *param)
 	t_philo	*philo;
 
 	philo = (t_philo *) param;
-	while (philo->data->start_of_dining == -1)
-		;
-	while(philo->data->death_of_philo == false)
+	pthread_mutex_lock(&(philo->data->start_mutex));
+	pthread_mutex_unlock(&(philo->data->start_mutex));
+	while (philo->amount_to_eat != 0)
 	{
-		pickup_fork(philo->id, philo->left_fork, philo->data);
-		// pickup_fork(philo->id, philo->right_fork, philo->data);
+		pickup_forks(philo);
 		eat(philo);
-		// putdown_fork(philo->right_fork);
-		putdown_fork(philo->left_fork);
-		schlafen(philo);
-		
+		putdown_forks(philo);
+		philo_sleep(philo);
 	}
 	return (NULL);
 }
-
-// pthread_mutex_t	print_lock;
-// void	*day_in_life_of_philo(void *param)
-// {
-// 	t_philo	*philo;
-
-// 	philo = (t_philo *) param;
-// 	while (philo->data->start_of_dining == -1)
-// 		;
-// 	pthread_mutex_init(&print_lock, NULL);
-// 	pthread_mutex_lock(&print_lock);
-// 	while(philo->data->death_of_philo == false)
-// 	{
-// 		logger(philo->id, "says hello", philo->data);
-// 		ms_sleep(200);
-// 		pthread_mutex_unlock(&print_lock);
-// 	}
-// 	return (NULL);
-// }

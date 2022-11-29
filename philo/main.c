@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 15:31:49 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/09 18:36:36 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:13:23 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@
 */
 int	init_data(t_data *data, int argc, char **argv)
 {
-	if (!init_timings(data, argc, argv))
+	if (!init_input(data, argc, argv))
 		return (print_error_msg());
-	data->start_of_dining = -1;
 	data->death_of_philo = false;
 	data->philos = NULL;
 	data->forks = NULL;
-	pthread_mutex_init(&(data->print_mutex), NULL);
 	return (1);
 }
 
@@ -39,6 +37,9 @@ int	init_locks(t_data *data)
 		cleanup(data);
 		return (0);
 	}
+	pthread_mutex_init(&(data->print_mutex), NULL);
+	pthread_mutex_init(&(data->start_mutex), NULL);
+	pthread_mutex_lock(&(data->start_mutex));
 	return (1);
 }
 
@@ -46,12 +47,12 @@ int	philosophize(t_data *data)
 {
 	if (!create_philos(data))
 		return (0);
-	begin_simulation(data);
-	while (1)
-		;
-	// check_death(data);
-	// if (!join_philos(data))
+	// if (!create_grim_reaper(data))
 	// 	return (0);
+	begin_simulation(data);
+	// check_death(data);
+	if (!join_philos(data))
+		return (0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 18:08:34 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/09 18:49:20 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/28 09:16:58 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,13 @@
 */
 bool	is_pos_num(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] == '+')
-		i++;
-	while (str[i] != '\0')
+	while (*str == '+')
+		str++;
+	while (*str != '\0')
 	{
-		if (str[i] < '0' || str[i] > '9')
+		if (*str < '0' || *str > '9')
 			return (false);
-		i++;
+		str++;
 	}
 	return (true);
 }
