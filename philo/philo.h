@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:00:53 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/28 17:08:10 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/29 17:05:53 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-enum e_state
-{
-	alive = 0,
-	dead = 1
-};
-
 typedef struct s_philo t_philo;
 
 typedef struct s_data
@@ -39,6 +33,7 @@ typedef struct s_data
 	long				start_of_dining;
 	bool				death_of_philo;
 	pthread_t			grim_reaper;
+	pthread_mutex_t		death_mutex;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		start_mutex;
 	t_philo				*philos;
@@ -48,8 +43,9 @@ typedef struct s_data
 typedef struct s_philo
 {
 	int				id;
-	enum e_state	state;
 	long			amount_to_eat;
+	long			time_of_last_meal;
+	pthread_mutex_t	meal_check;
 	pthread_t		philo;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -64,6 +60,7 @@ bool	is_pos_num(char *str);
 long	ft_philo_atoi(char *str);
 void	cleanup(t_data *data);
 int		ms_sleep(long time_in_ms);
+bool	dead_philo(t_data *data);
 
 /***********************************/
 
@@ -77,13 +74,18 @@ int		init_forks(t_data *data);
 /********* philosophize.c **********/
 
 int		create_philos(t_data *data);
-int		create_grim_reaper(t_data *data);
+void	*day_in_life_of_philo(void *param);
 void	begin_simulation(t_data *data);
 int		join_philos(t_data *data);
 
 /***********************************/
 
-void	*day_in_life_of_philo(void *param);
+/*********** grim_reaper ***********/
+
+int		create_grim_reaper(t_data *data);
+void	*harvest_dead_soul(void *param);
+
+/***********************************/
 
 // TODO: FIX cleanup() FUNCTION !!!!!!!!!!
 #endif

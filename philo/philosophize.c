@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/28 17:08:51 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/29 17:32:05 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 int	create_one_philo(t_data *data, int i)
 {
 	data->philos[i].id = i + 1;
-	data->philos[i].state = alive;
 	data->philos[i].amount_to_eat = data->amount_to_eat;
 	data->philos[i].left_fork = &(data->forks[i]);
 	data->philos[i].right_fork = &(data->forks[(i + 1) % data->count_of_philo]);
@@ -46,21 +45,38 @@ int	create_philos(t_data *data)
 	{
 		i = -1;
 		while (++i < data->count_of_philo)
+			if (pthread_mutex_init(&(data->philos[i].meal_check), NULL) != 0)
+				return (0);
+		i = -1;
+		while (++i < data->count_of_philo)
 			if (!create_one_philo(data, i))
 				return (0);
 		return (1);
 	}
 	return (0);
 }
-
-// int	create_grim_reaper(t_data *data)
-// {
-	
-// }
+/*
+	Creates thread that checks death of a philo and detaches it.
+	@return 0 in case of error.
+*/
+int	create_grim_reaper(t_data *data)
+{
+	if (pthread_create(&(data->grim_reaper), NULL,
+			&harvest_dead_soul, (void *)(data)) != 0)
+		return (0);
+	if (pthread_detach(data->grim_reaper) != 0)
+		return (0);
+	return (1);
+}
 
 void	begin_simulation(t_data *data)
 {
+	int	i;
+
 	data->start_of_dining = current_time_in_ms();
+	i = -1;
+	while (++i < data->count_of_philo)
+		data->philos[i].time_of_last_meal = data->start_of_dining;
 	pthread_mutex_unlock(&(data->start_mutex));
 }
 

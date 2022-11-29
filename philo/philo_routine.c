@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:44:59 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/28 16:14:25 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/29 17:38:34 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	pickup_fork(int id, pthread_mutex_t *fork, t_data *data)
 
 void	eat(t_philo *philo)
 {
+	pthread_mutex_lock(&(philo->meal_check));
+	philo->time_of_last_meal = current_time_in_ms();
+	pthread_mutex_unlock(&(philo->meal_check));
 	logger(philo->id, "is eating", philo->data);
 	ms_sleep(philo->data->time_to_eat);
 	philo->amount_to_eat--;
@@ -72,7 +75,7 @@ void	*day_in_life_of_philo(void *param)
 	philo = (t_philo *) param;
 	pthread_mutex_lock(&(philo->data->start_mutex));
 	pthread_mutex_unlock(&(philo->data->start_mutex));
-	while (philo->amount_to_eat != 0)
+	while (philo->amount_to_eat != 0 && !dead_philo(philo->data))
 	{
 		pickup_forks(philo);
 		eat(philo);

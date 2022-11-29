@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 18:08:34 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/28 09:16:58 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:41:56 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,10 @@ long	ft_philo_atoi(char *str)
 		i++;
 	}
 	return (ret);
+}
+
+int	print_error_msg()
+{
+	printf("Wrong input!\n");
+	return (0);
 }

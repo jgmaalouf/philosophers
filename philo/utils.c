@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:16:08 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/28 11:26:47 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:44:37 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ long	current_time_in_ms(void)
 	return ((t0.tv_sec * 1000) + (t0.tv_usec / 1000));
 }
 
+bool	dead_philo(t_data *data)
+{
+	bool	death;
+
+	pthread_mutex_lock(&(data->death_mutex));
+	death = data->death_of_philo;
+	pthread_mutex_unlock(&(data->death_mutex));
+	return (death);
+}
+
 /*
 	Prints out the elapsed time, and which philo doing what action.
 	In the form of: (time) (philo_id) (action).
@@ -78,17 +88,10 @@ void	logger(int philo_id, char *action, t_data *data)
 	long			elapsed_time;
 
 	pthread_mutex_lock(&(data->print_mutex));
-	elapsed_time = current_time_in_ms() - data->start_of_dining;
-	printf("%ld\t%d %s\n", elapsed_time, philo_id, action);
+	if (!dead_philo(data))
+	{
+		elapsed_time = current_time_in_ms() - data->start_of_dining;
+		printf("%ld\t%d %s\n", elapsed_time, philo_id, action);
+	}
 	pthread_mutex_unlock(&(data->print_mutex));
-}
-
-/*
-	Prints error message.
-	@return 0
-*/
-int	print_error_msg()
-{
-	printf("Wrong input!\n");
-	return (0);
 }
