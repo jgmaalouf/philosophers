@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:00:53 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 00:47:39 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:32:58 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
 }					t_philo;
+
 /************* utils.c *************/
 
 long	current_time_in_ms(void);
@@ -63,14 +64,10 @@ void	cleanup(t_data *data);
 int		ms_sleep(long time_in_ms);
 bool	dead_philo(t_data *data);
 
-/***********************************/
-
 /*********** init_data.c ***********/
 
 int		init_input(t_data *data, int argc, char **argv);
 int		init_forks(t_data *data);
-
-/***********************************/
 
 /********* philosophize.c **********/
 
@@ -79,14 +76,10 @@ void	*day_in_life_of_philo(void *param);
 void	begin_simulation(t_data *data);
 int		join_philos(t_data *data);
 
-/***********************************/
-
 /*********** grim_reaper ***********/
 
 int		create_grim_reaper(t_data *data);
 void	*harvest_dead_soul(void *param);
-
-/***********************************/
 
 // TODO: FIX cleanup() FUNCTION !!!!!!!!!!
 #endif

@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 13:48:57 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 01:27:07 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:34:15 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ static bool	philo_died(t_philo *philo)
 {
 	long	current_time;
 
+	pthread_mutex_lock(&(philo->meal_lock));
 	current_time = current_time_in_ms();
-	if ((current_time - philo->time_of_last_meal) > philo->data->time_to_die)
+	if ((current_time - philo->time_of_last_meal) > philo->time_to_die)
 	{
 		pthread_mutex_unlock(&(philo->meal_lock));
 		return (true);
@@ -45,6 +46,18 @@ static void	*announce_dead_philo(t_philo *philo)
 	return (NULL);
 }
 
+static bool philo_full(t_philo *philo)
+{
+	pthread_mutex_lock(&(philo->meal_lock));
+	if (philo->amount_to_eat != 0)
+	{
+		pthread_mutex_unlock(&(philo->meal_lock));
+		return (false);
+	}
+	pthread_mutex_unlock(&(philo->meal_lock));
+	return (true);
+}
+
 void	*harvest_dead_soul(void *param)
 {
 	t_data	*data;
@@ -56,10 +69,12 @@ void	*harvest_dead_soul(void *param)
 	// usleep(10000);
 	while (true)
 	{
+		usleep(5000);
 		i = -1;
 		while (++i < data->count_of_philo)
-			if (philo_died(&(data->philos[i])))
-				return (announce_dead_philo(&(data->philos[i])));
+			if (!philo_full(&(data->philos[i])))
+				if (philo_died(&(data->philos[i])))
+					return (announce_dead_philo(&(data->philos[i])));
 	}
 	return (NULL);
 }

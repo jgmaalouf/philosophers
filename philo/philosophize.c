@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 00:54:22 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:23:19 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	create_one_philo(t_data *data, int i)
 	data->philos[i].id = i + 1;
 	data->philos[i].amount_to_eat = data->amount_to_eat;
 	data->philos[i].time_to_die = data->time_to_die;
-	pthread_mutex_init(&(data->philos[i].meal_lock), NULL);
 	data->philos[i].left_fork = &(data->forks[i]);
 	data->philos[i].right_fork = &(data->forks[(i + 1) % data->count_of_philo]);
 	data->philos[i].data = data;
+	pthread_mutex_init(&(data->philos[i].meal_lock), NULL);
 	if (pthread_create(&(data->philos[i].philo), NULL,
 			&day_in_life_of_philo, (void*) &(data->philos[i])) != 0)
 		return (0);
@@ -52,7 +52,6 @@ int	create_philos(t_data *data)
 				return (0);
 		return (1);
 	}
-	// pthread_mutex_unlock(&(data->start_mutex));
 	return (0);
 }
 /*
