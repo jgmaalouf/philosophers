@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 18:08:34 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/29 15:41:56 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:00:48 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ long	ft_philo_atoi(char *str)
 	return (ret);
 }
 
-int	print_error_msg()
+int	print_error_msg(void)
 {
 	printf("Wrong input!\n");
 	return (0);

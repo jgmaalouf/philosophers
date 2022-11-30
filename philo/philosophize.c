@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 14:23:19 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:59:43 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	create_philos(t_data *data)
 	}
 	return (0);
 }
+
 /*
 	Creates thread that checks death of a philo and detaches it.
 	@return 0 in case of error.

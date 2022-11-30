@@ -6,17 +6,11 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:44:59 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 14:21:55 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:03:37 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	pickup_fork(int id, pthread_mutex_t *fork, t_data *data)
-{
-	pthread_mutex_lock(fork);
-	logger(id, "has taken a fork", data);
-}
 
 void	eat(t_philo *philo)
 {
@@ -26,11 +20,6 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&(philo->meal_lock));
 	logger(philo->id, "is eating", philo->data);
 	ms_sleep(philo->data->time_to_eat);
-}
-
-void	putdown_fork(pthread_mutex_t *fork)
-{
-	pthread_mutex_unlock(fork);
 }
 
 void	philo_sleep(t_philo *philo)

@@ -6,17 +6,17 @@
 #    By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 15:30:41 by jmaalouf          #+#    #+#              #
-#    Updated: 2022/11/30 16:06:57 by jmaalouf         ###   ########.fr        #
+#    Updated: 2022/11/30 17:04:42 by jmaalouf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = main.c init_data.c philo_routine.c philosophize.c \
-	utils.c utils2.c grim_reaper.c
+SRC = main.c init_data.c philo_routine.c philo_routine2.c \
+	philosophize.c grim_reaper.c utils.c utils2.c
 OBJ = $(addprefix obj/,$(SRC:.c=.o))
 CC = cc -pthread -g
-FLAGS = -Wall -Wextra -Werror -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror #-fsanitize=thread
 
 all: $(NAME)
 

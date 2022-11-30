@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:16:08 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 00:12:42 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:56:50 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ void	cleanup(t_data *data)
 
 	if (data->philos != NULL)
 	{
-		
+		i = -1;
+		while (++i < data->count_of_philo)
+			pthread_mutex_destroy(&(data->philos[i].meal_lock));
 		free(data->philos);
 	}
 	if (data->forks != NULL)
 	{
-		i = 0;
-		while (i < data->count_of_philo)
-		{
-			if (pthread_mutex_destroy(&(data->forks[i++])) != 0)
-				return ;
-		}
+		i = -1;
+		while (++i < data->count_of_philo)
+			pthread_mutex_destroy(&(data->forks[i]));
 		free(data->forks);
 	}
+	pthread_mutex_destroy(&(data->death_mutex));
 	pthread_mutex_destroy(&(data->print_mutex));
 	pthread_mutex_destroy(&(data->start_mutex));
 }

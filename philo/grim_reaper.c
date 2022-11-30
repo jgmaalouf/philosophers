@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 13:48:57 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 16:20:57 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:58:51 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	*announce_dead_philo(t_philo *philo)
 	return (NULL);
 }
 
-static bool philo_full(t_philo *philo)
+static bool	philo_full(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->meal_lock));
 	if (philo->amount_to_eat != 0)
