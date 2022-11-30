@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 13:48:57 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/29 19:26:00 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 01:27:07 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ static bool	philo_died(t_philo *philo)
 	long	current_time;
 
 	current_time = current_time_in_ms();
-	pthread_mutex_lock(&(philo->meal_check));
 	if ((current_time - philo->time_of_last_meal) > philo->data->time_to_die)
 	{
-		pthread_mutex_unlock(&(philo->meal_check));
+		pthread_mutex_unlock(&(philo->meal_lock));
 		return (true);
 	}
-	pthread_mutex_unlock(&(philo->meal_check));
+	pthread_mutex_unlock(&(philo->meal_lock));
 	return (false);
 }
 
@@ -54,7 +53,7 @@ void	*harvest_dead_soul(void *param)
 	data = (t_data *) param;
 	pthread_mutex_lock(&(data->start_mutex));
 	pthread_mutex_unlock(&(data->start_mutex));
-	usleep(700);
+	// usleep(10000);
 	while (true)
 	{
 		i = -1;

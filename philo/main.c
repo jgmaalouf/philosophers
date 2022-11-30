@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 15:31:49 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/29 17:38:16 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 01:04:02 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	init_locks(t_data *data)
 		return (0);
 	if (pthread_mutex_init(&(data->start_mutex), NULL) != 0)
 		return (0);
-	pthread_mutex_lock(&(data->start_mutex));
 	return (1);
 }
 
@@ -69,6 +68,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (!philosophize(&data))
 		return (EXIT_FAILURE);
-	cleanup(&data);
+	// cleanup(&data);
 	return (EXIT_SUCCESS);
 }

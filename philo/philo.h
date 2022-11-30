@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:00:53 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/29 17:05:53 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 00:47:39 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ typedef struct s_philo
 	int				id;
 	long			amount_to_eat;
 	long			time_of_last_meal;
-	pthread_mutex_t	meal_check;
+	long			time_to_die;
+	pthread_mutex_t	meal_lock;
 	pthread_t		philo;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;

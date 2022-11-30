@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 16:16:08 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/29 15:44:37 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 00:12:42 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	cleanup(t_data *data)
 	int	i;
 
 	if (data->philos != NULL)
+	{
+		
 		free(data->philos);
+	}
 	if (data->forks != NULL)
 	{
 		i = 0;

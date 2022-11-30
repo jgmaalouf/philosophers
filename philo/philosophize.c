@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/29 17:32:05 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 00:54:22 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	create_one_philo(t_data *data, int i)
 {
 	data->philos[i].id = i + 1;
 	data->philos[i].amount_to_eat = data->amount_to_eat;
+	data->philos[i].time_to_die = data->time_to_die;
+	pthread_mutex_init(&(data->philos[i].meal_lock), NULL);
 	data->philos[i].left_fork = &(data->forks[i]);
 	data->philos[i].right_fork = &(data->forks[(i + 1) % data->count_of_philo]);
 	data->philos[i].data = data;
@@ -40,19 +42,17 @@ int	create_philos(t_data *data)
 {
 	int	i;
 
+	pthread_mutex_lock(&(data->start_mutex));
 	data->philos = malloc(sizeof(t_philo) * (data->count_of_philo));
 	if (data->philos != NULL)
 	{
-		i = -1;
-		while (++i < data->count_of_philo)
-			if (pthread_mutex_init(&(data->philos[i].meal_check), NULL) != 0)
-				return (0);
 		i = -1;
 		while (++i < data->count_of_philo)
 			if (!create_one_philo(data, i))
 				return (0);
 		return (1);
 	}
+	// pthread_mutex_unlock(&(data->start_mutex));
 	return (0);
 }
 /*
