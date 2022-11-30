@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 13:48:57 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 16:58:51 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:18:33 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	philo_full(t_philo *philo)
 	return (true);
 }
 
-static bool	philos_full(t_data *data)
+bool	philos_full(t_data *data)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 16:59:43 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:19:53 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	create_one_philo(t_data *data, int i)
 	if (pthread_create(&(data->philos[i].philo), NULL,
 			&day_in_life_of_philo, (void*) &(data->philos[i])) != 0)
 		return (0);
+	if (data->count_of_philo == 1)
+		pthread_detach(data->philos[i].philo);
 	return (1);
 }
 
@@ -78,6 +80,8 @@ void	begin_simulation(t_data *data)
 	while (++i < data->count_of_philo)
 		data->philos[i].time_of_last_meal = data->start_of_dining;
 	pthread_mutex_unlock(&(data->start_mutex));
+	while (!dead_philo(data) && !philos_full(data))
+		ms_sleep(1);
 }
 
 /*
@@ -89,6 +93,8 @@ int	join_philos(t_data *data)
 	int	i;
 
 	i = -1;
+	if (data->count_of_philo == 1)
+		i++;
 	while (++i < data->count_of_philo)
 		if (pthread_join(data->philos[i].philo, NULL) != 0)
 			return (0);

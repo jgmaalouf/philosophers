@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:00:53 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 17:00:23 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 19:18:41 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,17 @@ void	*day_in_life_of_philo(void *param);
 void	begin_simulation(t_data *data);
 int		join_philos(t_data *data);
 
+/********* philo_routine2.c ********/
+
+void	pickup_fork(int id, pthread_mutex_t *fork, t_data *data);
+void	putdown_fork(pthread_mutex_t *fork);
+int		create_lone_philo(t_philo *philo);
+
 /*********** grim_reaper ***********/
 
 int		create_grim_reaper(t_data *data);
 void	*harvest_dead_soul(void *param);
+bool	philos_full(t_data *data);
 
 // TODO: FIX cleanup() FUNCTION !!!!!!!!!!
 #endif
