@@ -6,14 +6,14 @@
 #    By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 15:30:41 by jmaalouf          #+#    #+#              #
-#    Updated: 2022/11/30 01:05:22 by jmaalouf         ###   ########.fr        #
+#    Updated: 2022/11/30 15:55:16 by jmaalouf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 SRC = main.c init_data.c philo_routine.c philosophize.c \
-	utils.c utils2.c grim_reaper.c
+	utils.c utils2.c death_check.c
 OBJ = $(addprefix obj/,$(SRC:.c=.o))
 CC = cc -pthread -g
 FLAGS = -Wall -Wextra -Werror #-fsanitize=thread

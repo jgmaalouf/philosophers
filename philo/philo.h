@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:00:53 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 14:32:58 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:52:34 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_data
 	long				time_to_sleep;
 	long				start_of_dining;
 	bool				death_of_philo;
-	pthread_t			grim_reaper;
 	pthread_mutex_t		death_mutex;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		start_mutex;
@@ -46,7 +45,6 @@ typedef struct s_philo
 	long			amount_to_eat;
 	long			time_of_last_meal;
 	long			time_to_die;
-	pthread_mutex_t	meal_lock;
 	pthread_t		philo;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
@@ -76,10 +74,10 @@ void	*day_in_life_of_philo(void *param);
 void	begin_simulation(t_data *data);
 int		join_philos(t_data *data);
 
-/*********** grim_reaper ***********/
+/***********************************/
 
-int		create_grim_reaper(t_data *data);
-void	*harvest_dead_soul(void *param);
+bool philo_full(t_philo *philo);
+void	check_death(t_philo *philo);
 
 // TODO: FIX cleanup() FUNCTION !!!!!!!!!!
 #endif

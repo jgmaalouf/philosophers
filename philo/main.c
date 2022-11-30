@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 15:31:49 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 01:04:02 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:32:38 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	init_locks(t_data *data)
 int	philosophize(t_data *data)
 {
 	if (!create_philos(data))
-		return (0);
-	if (!create_grim_reaper(data))
 		return (0);
 	begin_simulation(data);
 	if (!join_philos(data))

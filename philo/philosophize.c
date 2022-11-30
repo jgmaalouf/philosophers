@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 10:49:10 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 14:23:19 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:32:30 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	create_one_philo(t_data *data, int i)
 	data->philos[i].left_fork = &(data->forks[i]);
 	data->philos[i].right_fork = &(data->forks[(i + 1) % data->count_of_philo]);
 	data->philos[i].data = data;
-	pthread_mutex_init(&(data->philos[i].meal_lock), NULL);
 	if (pthread_create(&(data->philos[i].philo), NULL,
 			&day_in_life_of_philo, (void*) &(data->philos[i])) != 0)
 		return (0);
@@ -53,19 +52,6 @@ int	create_philos(t_data *data)
 		return (1);
 	}
 	return (0);
-}
-/*
-	Creates thread that checks death of a philo and detaches it.
-	@return 0 in case of error.
-*/
-int	create_grim_reaper(t_data *data)
-{
-	if (pthread_create(&(data->grim_reaper), NULL,
-			&harvest_dead_soul, (void *)(data)) != 0)
-		return (0);
-	if (pthread_detach(data->grim_reaper) != 0)
-		return (0);
-	return (1);
 }
 
 void	begin_simulation(t_data *data)

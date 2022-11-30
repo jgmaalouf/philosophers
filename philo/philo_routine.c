@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:44:59 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 14:21:55 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:57:50 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ void	pickup_fork(int id, pthread_mutex_t *fork, t_data *data)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->meal_lock));
-	philo->amount_to_eat--;
+	check_death(philo);
 	philo->time_of_last_meal = current_time_in_ms();
-	pthread_mutex_unlock(&(philo->meal_lock));
 	logger(philo->id, "is eating", philo->data);
 	ms_sleep(philo->data->time_to_eat);
+	philo->amount_to_eat--;
 }
 
 void	putdown_fork(pthread_mutex_t *fork)
@@ -35,21 +34,27 @@ void	putdown_fork(pthread_mutex_t *fork)
 
 void	philo_sleep(t_philo *philo)
 {
+	check_death(philo);
 	logger(philo->id, "is sleeping", philo->data);
 	ms_sleep(philo->data->time_to_sleep);
 	logger(philo->id, "is thinking", philo->data);
+	check_death(philo);
 }
 
 void	pickup_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
+		check_death(philo);
 		pickup_fork(philo->id, philo->left_fork, philo->data);
+		check_death(philo);
 		pickup_fork(philo->id, philo->right_fork, philo->data);
 	}
 	else
 	{
+		check_death(philo);
 		pickup_fork(philo->id, philo->right_fork, philo->data);
+		check_death(philo);
 		pickup_fork(philo->id, philo->left_fork, philo->data);
 	}
 }
@@ -75,7 +80,7 @@ void	*day_in_life_of_philo(void *param)
 	philo = (t_philo *) param;
 	pthread_mutex_lock(&(philo->data->start_mutex));
 	pthread_mutex_unlock(&(philo->data->start_mutex));
-	while (philo->amount_to_eat != 0 && !dead_philo(philo->data))
+	while (!philo_full(philo) && !dead_philo(philo->data))
 	{
 		pickup_forks(philo);
 		eat(philo);
