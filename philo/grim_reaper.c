@@ -6,7 +6,7 @@
 /*   By: jmaalouf <jmaalouf@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 13:48:57 by jmaalouf          #+#    #+#             */
-/*   Updated: 2022/11/30 14:34:15 by jmaalouf         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:20:57 by jmaalouf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,17 @@ static bool philo_full(t_philo *philo)
 	return (true);
 }
 
+static bool	philos_full(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->count_of_philo)
+		if (philo_full(&(data->philos[i])))
+			return (true);
+	return (false);
+}
+
 void	*harvest_dead_soul(void *param)
 {
 	t_data	*data;
@@ -66,10 +77,9 @@ void	*harvest_dead_soul(void *param)
 	data = (t_data *) param;
 	pthread_mutex_lock(&(data->start_mutex));
 	pthread_mutex_unlock(&(data->start_mutex));
-	// usleep(10000);
-	while (true)
+	while (!philos_full(data))
 	{
-		usleep(5000);
+		ms_sleep(3);
 		i = -1;
 		while (++i < data->count_of_philo)
 			if (!philo_full(&(data->philos[i])))
